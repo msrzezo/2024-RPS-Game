@@ -1,7 +1,9 @@
+import random
+
+
 # Check that users have entered a valid
 # option based on a list
 def string_checker(question, valid_ans=("yes", "no")):
-
     error = f"Please enter a valid option from the following list: {valid_ans}"
 
     while True:
@@ -23,11 +25,12 @@ def string_checker(question, valid_ans=("yes", "no")):
         print(error)
         print()
 
+
 # Display instructions
-def instructions ():
+def instructions():
     print('''
     
-**** instructions ****
+**** Instructions ****
 
 To begin, choose the number of rounds (or play 
 infinite mode).
@@ -42,7 +45,7 @@ The rules are as follows:
 
 Good luck!
     
-''' )
+''')
 
 
 # checks that users enters an integer
@@ -66,6 +69,29 @@ def int_check(question):
 
         except ValueError:
             print(error)
+
+
+# Compare user / computer choice and returns
+# result (win / lose / tie)
+def rps_compare(user, comp):
+    # If the user and the computer choice is the same, it's a tie
+    if user == comp:
+        result = "tie"
+
+    # there are 3 ways to win
+
+    elif user == "paper" and comp == "rock":
+        result = "win"
+    elif user == "rock" and comp == "scissors":
+        result = "win"
+    elif user == "scissors" and comp == "paper":
+        result = "win"
+
+    # if it's not a win / tie then it's a loss
+    else:
+        return "lose"
+
+    return result
 
 
 # Main Routine starts here
@@ -103,7 +129,10 @@ while rounds_played < num_rounds:
         rounds_heading = f"\n 💿💿💿 Round {rounds_played + 1} of {num_rounds} 💿💿💿"
 
     print(rounds_heading)
-    print()
+
+    # randomly choose from the rps list (excluding the exit code)
+    comp_choice = random.choice(rps_list[:-1])
+    print("Computer choice", comp_choice)
 
     # get user choice
     user_choice = string_checker("Choose: ", rps_list)
@@ -112,6 +141,12 @@ while rounds_played < num_rounds:
     # if user choice is in the exit code, break the loop
     if user_choice == "xxx":
         break
+
+    # randomly choose from the rps list (excluding the exit code)
+
+    result = rps_compare(user_choice, comp_choice)
+    print(f"{user_choice} vs {comp_choice}, {result}")
+
     rounds_played += 1
 
     # if user are in infinite mode, increase number of rounds!
